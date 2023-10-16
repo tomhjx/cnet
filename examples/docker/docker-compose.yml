@@ -1,0 +1,19 @@
+version: '3.5'
+services:
+  cnet:
+      image: golang:1.20-alpine3.17
+      restart: always
+      hostname: foo
+      privileged: true
+      working_dir: /work/src
+      command:  ["go", "run", "./cmd/cnet/main.go", "--config", "/work/src/examples/config/http.json"]
+      environment:
+        GOPROXY: "https://goproxy.cn,direct"
+      volumes:
+        - ../../:/work/src
+        - ~/Work/workspace/go:/go
+      cap_add:
+        - ALL
+networks:
+  default:
+    name: lab
