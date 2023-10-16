@@ -2,7 +2,6 @@ package options
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -52,7 +51,6 @@ func NewConfig() *Config {
 	go func() {
 		for {
 			<-c.changed
-			fmt.Println("config changed.")
 			c.OnChanged(c)
 		}
 	}()
@@ -85,7 +83,6 @@ func (c *Config) Load() {
 
 	c.loadInitOnce.Do(func() {
 		viper.OnConfigChange(func(e fsnotify.Event) {
-			fmt.Println("Config file changed:", e.Name)
 			c.changed <- true
 		})
 		viper.SetConfigFile(c.ConfigPath)
@@ -95,16 +92,13 @@ func (c *Config) Load() {
 		viper.WatchConfig()
 	})
 
-	log.Println("load.Unmarshal.start")
 	if err := viper.Unmarshal(&c.Content); err != nil {
 		log.Fatalf("Mapping config [%s] failed, %s", c.ConfigPath, err)
 	}
-	log.Println("load.Unmarshal.value:", c.Content)
 
 }
 
 func (c *Config) Complete() []*CompletedConfig {
-	log.Println("config.Complete.start")
 	c.Load()
 
 	cls := []*CompletedConfig{}
@@ -112,7 +106,6 @@ func (c *Config) Complete() []*CompletedConfig {
 		c.Content.Sinks = append(c.Content.Sinks, flow.SinkConfig{Name: flow.StdOutSinkName})
 	}
 
-	log.Println("config.Complete.root.value:", c.Content)
 	for _, v := range c.Content.Items {
 		cc := &CompletedConfig{ConfigDataItem: v, IncludeFields: []field.Field{}}
 		if len(cc.Includes) == 0 {
@@ -136,7 +129,6 @@ func (c *Config) Complete() []*CompletedConfig {
 		for _, f := range cc.Includes {
 			cc.IncludeFields = append(cc.IncludeFields, field.Field(f))
 		}
-		log.Println("config.Complete.item.value.ClientID:", cc.ClientID)
 		cls = append(cls, cc)
 	}
 

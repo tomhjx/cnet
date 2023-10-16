@@ -90,6 +90,8 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 		res.Response.Body = &body
 	}
 	resp.Body.Close()
+	res.Response.Status = resp.Status
+	res.Response.StatusCode = resp.StatusCode
 
 	if _, ok := h.Option.IncludeFields[field.Headers]; ok {
 		for k, v := range resp.Header {

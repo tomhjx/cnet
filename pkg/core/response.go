@@ -1,6 +1,8 @@
 package core
 
 type Response struct {
-	Headers map[string]string `json:"headers,omitempty"`
-	Body    *string           `json:"body,omitempty"`
+	Headers    map[string]string
+	Body       *string
+	Status     string
+	StatusCode int
 }

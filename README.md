@@ -53,6 +53,8 @@ method          | 请求方法，GET/POST/PUT/DELETE...
 connected_via   | 连接过程中相关的标记
 headers         | 响应头信息
 body            | 响应正文
+status          | 响应状态描述
+status_code     | 响应状态码 
 
 
 

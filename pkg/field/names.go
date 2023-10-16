@@ -21,4 +21,6 @@ const (
 	ConnectedVia        Field = "connected_via"
 	Headers             Field = "headers"
 	Body                Field = "body"
+	Status              Field = "status"
+	StatusCode          Field = "status_code"
 )
