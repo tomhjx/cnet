@@ -44,6 +44,9 @@ func runJob(ctx context.Context, configs []*options.CompletedConfig) error {
 	if err := loadJob(ctx, configs); err != nil {
 		return err
 	}
+	if job == nil {
+		return nil
+	}
 	return job.Run()
 }
 
