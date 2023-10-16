@@ -25,6 +25,7 @@ cNET
 
 ### 输出源
 * [x] STDOUT
+* [x] SYSLOG
 * [ ] UDP
 * [ ] TCP
 * [ ] Unix Socket
