@@ -25,9 +25,6 @@ func NewCommand() *cobra.Command {
 				version.Print()
 				return nil
 			}
-			o.Config.OnChanged = func(c *options.Config) {
-				NotifyLoadJob(context.Background(), c)
-			}
 			return Run(context.Background(), o.Config, flow.SetupSignalHandler())
 		}}
 

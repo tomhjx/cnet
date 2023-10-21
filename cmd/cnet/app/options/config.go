@@ -3,12 +3,10 @@ package options
 import (
 	"encoding/json"
 	"log"
-	"sync"
 	"time"
 
-	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
+	"github.com/tomhjx/cnet/pkg/config"
 	"github.com/tomhjx/cnet/pkg/core"
 	"github.com/tomhjx/cnet/pkg/field"
 	"github.com/tomhjx/cnet/pkg/flow"
@@ -30,12 +28,11 @@ type ConfigData struct {
 }
 
 type Config struct {
-	Content      ConfigData
-	ConfigPath   string
-	Version      bool
-	loadInitOnce sync.Once
-	OnChanged    func(*Config)
-	changed      chan bool
+	Content            ConfigData
+	ConfigPath         string
+	ConfigPollInterval time.Duration
+	Version            bool
+	OnLoaded           func(*Config)
 }
 
 func NewConfig() *Config {
@@ -46,14 +43,7 @@ func NewConfig() *Config {
 				Sinks:    []flow.SinkConfig{},
 			},
 		},
-		changed: make(chan bool),
 	}
-	go func() {
-		for {
-			<-c.changed
-			c.OnChanged(c)
-		}
-	}()
 	return c
 }
 
@@ -61,9 +51,10 @@ func (c *Config) AddFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&c.Content.ClientID, "cid", c.Content.ClientID, "Used to differentiate reporting clients")
 	flags.StringVar(&c.Content.URL, "url", c.Content.URL, "URL to work with")
 	flags.StringVarP(&c.ConfigPath, "config", "K", "", "Specify which config file to read")
+	flags.DurationVar(&c.ConfigPollInterval, "config-poll-interval", time.Minute, "Control the interval duration for automatic polling of remote configuration files.")
 	flags.StringVarP(&c.Content.Method, "request", "X", c.Content.Method, "Specify request command to use")
 	flags.StringVarP(&c.Content.Data, "data", "d", "", "HTTP POST data (H)")
-	flags.DurationVar(&c.Content.Interval, "interval", c.Content.Interval, "Make a request every N seconds, where the configuration declares N.")
+	flags.DurationVar(&c.Content.Interval, "interval", c.Content.Interval, "Control the interval duration between each request.")
 	flags.BoolVarP(&c.Version, "version", "V", c.Version, "Show version number and quit")
 	flags.StringArrayVarP(&c.Content.Includes, "include", "i", c.Content.Includes, "Include protocol fields (header,body) in the output")
 
@@ -76,55 +67,48 @@ func (c *Config) AddFlags(flags *pflag.FlagSet) {
 	}
 }
 
-func (c *Config) Load() {
+func (c *Config) Init(onLoaded func(ConfigData)) {
 	if c.ConfigPath == "" {
 		return
 	}
-
-	c.loadInitOnce.Do(func() {
-		viper.OnConfigChange(func(e fsnotify.Event) {
-			c.changed <- true
-		})
-		viper.SetConfigFile(c.ConfigPath)
-		if err := viper.ReadInConfig(); err != nil {
-			log.Fatalf("Read config [%s] failed, %s", c.ConfigPath, err)
-		}
-		viper.WatchConfig()
-	})
-
-	if err := viper.Unmarshal(&c.Content); err != nil {
-		log.Fatalf("Mapping config [%s] failed, %s", c.ConfigPath, err)
+	b, err := config.NewBuilder(config.InputOption{Path: c.ConfigPath, PollInterval: c.ConfigPollInterval}, c.Content)
+	if err != nil {
+		log.Fatalln(err)
 	}
-
+	b.OnLoad(func(d any) {
+		onLoaded(d.(ConfigData))
+	})
+	b.Load()
+	b.Watch()
 }
 
-func (c *Config) Complete() []*CompletedConfig {
-	c.Load()
+func (c ConfigData) Complete() []*CompletedConfig {
 
 	cls := []*CompletedConfig{}
-	if len(c.Content.Sinks) == 0 {
-		c.Content.Sinks = append(c.Content.Sinks, flow.SinkConfig{Name: flow.StdOutSinkName})
+	sinks := c.Sinks
+	if len(sinks) == 0 {
+		sinks = append(c.Sinks, flow.SinkConfig{Name: flow.StdOutSinkName})
 	}
 
-	for _, v := range c.Content.Items {
+	for _, v := range c.Items {
 		cc := &CompletedConfig{ConfigDataItem: v, IncludeFields: []field.Field{}}
 		if len(cc.Includes) == 0 {
-			cc.Includes = c.Content.Includes
+			cc.Includes = c.Includes
 		}
 		if len(v.Sinks) == 0 {
-			cc.Sinks = c.Content.Sinks
+			cc.Sinks = sinks
 		}
 		if cc.ClientID == "" {
-			cc.ClientID = c.Content.ClientID
+			cc.ClientID = c.ClientID
 		}
 		if cc.Interval == 0 {
-			cc.Interval = c.Content.Interval
+			cc.Interval = c.Interval
 		}
 		if cc.Method == "" {
-			cc.Method = c.Content.Method
+			cc.Method = c.Method
 		}
 		if cc.URL == "" {
-			cc.URL = c.Content.URL
+			cc.URL = c.URL
 		}
 		for _, f := range cc.Includes {
 			cc.IncludeFields = append(cc.IncludeFields, field.Field(f))

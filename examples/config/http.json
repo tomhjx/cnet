@@ -1,5 +1,5 @@
 {
-    "client_id":"foo2023101605",
+    "client_id":"foo2023101916",
     "interval": "10s",
     "includes":["jid","tid","status","status_code","name_lookup_time","connect_time","tcp_time","ssl_time","app_connect_time","pre_transfer_time","start_transfer_time","content_transfer_time","server_process_time","ttfb_time","total_time","connected_via"],
     "sinks":[
@@ -19,7 +19,7 @@
             "url":"https://juejin.cn"
         },
         {
-            "url":"https://github.com/tomhjx/cnet"
+            "url":"http://www.baidu.com"
         }
     ]
 }

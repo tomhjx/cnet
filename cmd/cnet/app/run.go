@@ -10,15 +10,15 @@ import (
 
 var (
 	job          *flow.Job
-	jobPreloaded = make(chan *jobContext)
+	jobPreloaded = make(chan *jobContext, 10)
 )
 
 type jobContext struct {
 	ctx    context.Context
-	config *options.Config
+	config options.ConfigData
 }
 
-func NotifyLoadJob(ctx context.Context, config *options.Config) error {
+func NotifyLoadJob(ctx context.Context, config options.ConfigData) error {
 	jobPreloaded <- &jobContext{ctx: ctx, config: config}
 	return nil
 }
@@ -32,7 +32,11 @@ func Run(ctx context.Context, config *options.Config, stopCh <-chan struct{}) er
 			}
 		}
 	}()
-	NotifyLoadJob(ctx, config)
+	config.Init(func(c options.ConfigData) {
+		NotifyLoadJob(context.Background(), c)
+	})
+
+	// NotifyLoadJob(ctx, config)
 	<-stopCh
 	return nil
 }
