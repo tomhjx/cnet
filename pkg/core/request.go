@@ -5,12 +5,14 @@ import (
 )
 
 type Request struct {
+	ID       string
 	JobID    string
 	TaskID   string
 	ClientID string
 	Tags     map[string]string
 	RawURL   string
 	Method   string
+	Host     string
 }
 
 func (r *Request) Complete() *CompletedRequest {

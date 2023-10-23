@@ -1,0 +1,18 @@
+{
+    "client_id":"foo2023101916",
+    "interval": "10s",
+    "includes":["id","jid","tid","total_time","stddev_total_time","sent", "recv", "loss_pct"],
+    "sinks":[
+        {
+            "name":"stdout"
+        }
+    ],
+    "items": [
+        {
+            "host":"14.215.57.234"
+        },
+        {
+            "host":"www.baidu.com"
+        }
+    ]
+}

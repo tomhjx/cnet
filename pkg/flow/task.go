@@ -32,6 +32,7 @@ func NewTask(ctx context.Context, request *core.CompletedRequest, sinks []sink.S
 	for _, v := range option.IncludeFields {
 		ho.IncludeFields[v] = true
 	}
+	ho.TimeOut = option.Interval
 	t := &Task{
 		id:             uuid.New().String(),
 		ctx:            ctx,
@@ -62,7 +63,7 @@ func (f *Task) AddSink(s sink.Sink) error {
 	return nil
 }
 
-func (f *Task) RunOnce() error {
+func (f *Task) Run() error {
 	res, err := f.protocol.Handle(f.request, f.handlerOption)
 	if err != nil {
 		return err
@@ -84,21 +85,27 @@ func (f *Task) RunOnce() error {
 	return nil
 }
 
-func (t *Task) Run() error {
-	defer log.Printf("task [%s] done.", t.ID())
-
+func (t *Task) RunLoop() error {
+	ticker := time.NewTicker(t.interval)
+	defer func() {
+		ticker.Stop()
+		log.Printf("task [%s] done.", t.ID())
+	}()
+	run := func() {
+		if !t.isAlways {
+			t.remainingCount--
+		}
+		if err := t.Run(); err != nil {
+			log.Println(err)
+		}
+	}
+	run()
 	for t.remainingCount > 0 || t.isAlways {
 		select {
 		case <-t.ctx.Done():
 			return nil
-		default:
-			if !t.isAlways {
-				t.remainingCount--
-			}
-			if err := t.RunOnce(); err != nil {
-				log.Println(err)
-			}
-			time.Sleep(t.interval)
+		case <-ticker.C:
+			run()
 		}
 	}
 	return nil

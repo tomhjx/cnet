@@ -5,13 +5,6 @@
     "sinks":[
         {
             "name":"stdout"
-        },
-        {
-            "name":"syslog",
-            "option": {
-                "network":"tcp",
-                "addr":"rsyslog.lab.local:514"
-            }
         }
     ],
     "items": [

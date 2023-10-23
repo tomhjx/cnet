@@ -3,6 +3,7 @@ package flow
 import "github.com/tomhjx/cnet/pkg/field"
 
 func RegisterFields() {
+	field.ID.Inject(func(r any) any { return r.(*RawContent).Request.ID })
 	field.JobID.Inject(func(r any) any { return r.(*RawContent).Request.JobID })
 	field.TaskID.Inject(func(r any) any { return r.(*RawContent).Request.TaskID })
 	field.ClientID.Inject(func(r any) any { return r.(*RawContent).Request.ClientID })
@@ -25,4 +26,8 @@ func RegisterFields() {
 	field.Body.Inject(func(r any) any { return r.(*RawContent).Result.Response.Body })
 	field.Status.Inject(func(r any) any { return r.(*RawContent).Result.Response.Status })
 	field.StatusCode.Inject(func(r any) any { return r.(*RawContent).Result.Response.StatusCode })
+	field.Sent.Inject(func(r any) any { return r.(*RawContent).Result.RunTime.Sent })
+	field.Recv.Inject(func(r any) any { return r.(*RawContent).Result.RunTime.Recv })
+	field.LossPct.Inject(func(r any) any { return r.(*RawContent).Result.RunTime.LossPct })
+	field.StdDevTotalTime.Inject(func(r any) any { return r.(*RawContent).Result.RunTime.StdDevTotalTime.Milliseconds() })
 }

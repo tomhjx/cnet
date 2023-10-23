@@ -16,7 +16,7 @@ type Job struct {
 func (j *Job) Run() error {
 	for _, t := range j.tasks {
 		go func(t *Task) {
-			t.Run()
+			t.RunLoop()
 		}(t)
 	}
 	return nil

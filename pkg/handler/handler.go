@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"time"
+
 	"github.com/tomhjx/cnet/pkg/core"
 	"github.com/tomhjx/cnet/pkg/field"
 )
@@ -12,4 +14,5 @@ type Handler interface {
 
 type Option struct {
 	IncludeFields map[field.Field]bool
+	TimeOut       time.Duration
 }

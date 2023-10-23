@@ -1,6 +1,7 @@
 package field
 
 const (
+	ID                  Field = "id"
 	JobID               Field = "jid"
 	TaskID              Field = "tid"
 	ClientID            Field = "cid"
@@ -23,4 +24,8 @@ const (
 	Body                Field = "body"
 	Status              Field = "status"
 	StatusCode          Field = "status_code"
+	Sent                Field = "sent"
+	Recv                Field = "recv"
+	LossPct             Field = "loss_pct"
+	StdDevTotalTime     Field = "stddev_total_time"
 )

@@ -6,7 +6,7 @@ services:
       hostname: foo
       privileged: true
       working_dir: /work/src
-      command:  ["go", "run", "./cmd/cnet/main.go", "--config", "/work/src/examples/config/http.json"]
+      command:  ["go", "run", "./cmd/cnet/main.go", "--config", "/work/src/examples/config/host-stdout.json"]
       environment:
         GOPROXY: "https://goproxy.cn,direct"
       volumes:

@@ -17,5 +17,9 @@ type RunTime struct {
 	StartTransferTime   time.Duration
 	ContentTransferTime time.Duration
 	TotalTime           time.Duration
+	StdDevTotalTime     time.Duration
 	ConnectedVia        string
+	Sent                int
+	Recv                int
+	LossPct             float64
 }

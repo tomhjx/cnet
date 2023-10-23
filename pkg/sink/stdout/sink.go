@@ -2,7 +2,6 @@ package stdout
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/tomhjx/cnet/pkg/sink"
 )
@@ -12,7 +11,6 @@ type Sink struct {
 }
 
 func (s Sink) New(o sink.Option) (sink.Sink, error) {
-	log.Println("sink.stdout")
 	return &Sink{Option: o}, nil
 }
 

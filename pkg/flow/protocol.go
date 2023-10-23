@@ -3,15 +3,18 @@ package flow
 import (
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/tomhjx/cnet/pkg/core"
 	"github.com/tomhjx/cnet/pkg/field"
 	"github.com/tomhjx/cnet/pkg/handler"
+	"github.com/tomhjx/cnet/pkg/handler/host"
 	"github.com/tomhjx/cnet/pkg/handler/http"
 )
 
 const (
 	HTTPProtocol  Protocol = "http"
 	HTTPsProtocol Protocol = "https"
+	HOSTProtocol  Protocol = "host"
 )
 
 type ProtocolSet struct {
@@ -36,6 +39,7 @@ func (p Protocol) Handle(req *core.CompletedRequest, o *handler.Option) (*core.R
 	if err != nil {
 		return nil, err
 	}
+	req.ID = uuid.New().String()
 	return h.Do(req)
 }
 
@@ -60,12 +64,10 @@ func (p Protocol) Inject(h handler.Handler, cm []field.Field) {
 }
 
 func ProtocolWithCompletedRequest(c *core.CompletedRequest) Protocol {
-
 	if c.URL != nil {
 		return Protocol(c.URL.Scheme)
 	}
-
-	return HTTPProtocol
+	return HOSTProtocol
 }
 
 func RegisterProtocols() {
@@ -73,4 +75,5 @@ func RegisterProtocols() {
 	httpMeta := append(CommonMeta, []field.Field{field.URL, field.Method}...)
 	HTTPProtocol.Inject(http.Handle{}, httpMeta)
 	HTTPsProtocol.Inject(http.Handle{}, httpMeta)
+	HOSTProtocol.Inject(host.Handle{}, CommonMeta)
 }

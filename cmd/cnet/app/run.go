@@ -35,8 +35,6 @@ func Run(ctx context.Context, config *options.Config, stopCh <-chan struct{}) er
 	config.Init(func(c options.ConfigData) {
 		NotifyLoadJob(context.Background(), c)
 	})
-
-	// NotifyLoadJob(ctx, config)
 	<-stopCh
 	return nil
 }
