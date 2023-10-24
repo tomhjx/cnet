@@ -71,8 +71,8 @@ func ProtocolWithCompletedRequest(c *core.CompletedRequest) Protocol {
 }
 
 func RegisterProtocols() {
-	CommonMeta := []field.Field{field.ClientID}
-	httpMeta := append(CommonMeta, []field.Field{field.URL, field.Method}...)
+	CommonMeta := []field.Field{field.ClientID, field.ADDR}
+	httpMeta := append(CommonMeta, []field.Field{field.Method}...)
 	HTTPProtocol.Inject(http.Handle{}, httpMeta)
 	HTTPsProtocol.Inject(http.Handle{}, httpMeta)
 	HOSTProtocol.Inject(host.Handle{}, CommonMeta)

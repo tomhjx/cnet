@@ -16,7 +16,7 @@ func (h Handle) Initialize(o *handler.Option) (handler.Handler, error) {
 
 func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 	res := core.NewResult()
-	pinger, err := probing.NewPinger(hreq.Host)
+	pinger, err := probing.NewPinger(hreq.ADDR)
 	if err != nil {
 		return res, err
 	}

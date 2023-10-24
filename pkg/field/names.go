@@ -6,7 +6,7 @@ const (
 	TaskID              Field = "tid"
 	ClientID            Field = "cid"
 	Tags                Field = "tags"
-	URL                 Field = "url"
+	ADDR                Field = "addr"
 	Method              Field = "method"
 	NameLookUpTime      Field = "name_lookup_time"
 	ConnectTime         Field = "connect_time"

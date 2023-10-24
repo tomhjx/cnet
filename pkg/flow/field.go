@@ -8,7 +8,7 @@ func RegisterFields() {
 	field.TaskID.Inject(func(r any) any { return r.(*RawContent).Request.TaskID })
 	field.ClientID.Inject(func(r any) any { return r.(*RawContent).Request.ClientID })
 	field.Tags.Inject(func(r any) any { return r.(*RawContent).Request.Tags })
-	field.URL.Inject(func(r any) any { return r.(*RawContent).Request.RawURL })
+	field.ADDR.Inject(func(r any) any { return r.(*RawContent).Request.ADDR })
 	field.Method.Inject(func(r any) any { return r.(*RawContent).Request.Method })
 	field.NameLookUpTime.Inject(func(r any) any { return r.(*RawContent).Result.RunTime.NameLookUpTime.Milliseconds() })
 	field.ConnectTime.Inject(func(r any) any { return r.(*RawContent).Result.RunTime.ConnectTime.Milliseconds() })

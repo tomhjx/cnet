@@ -16,10 +16,10 @@
     ],
     "items": [
         {
-            "url":"https://juejin.cn"
+            "addr":"https://juejin.cn"
         },
         {
-            "url":"http://www.baidu.com"
+            "addr":"http://www.baidu.com"
         }
     ]
 }

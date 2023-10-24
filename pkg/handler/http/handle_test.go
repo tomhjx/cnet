@@ -22,14 +22,14 @@ func TestHandle_Do(t *testing.T) {
 		{
 			"http",
 			args{
-				hreq: &core.Request{RawURL: "http://www.baidu.com/", Method: http.MethodGet},
+				hreq: &core.Request{ADDR: "http://www.baidu.com/", Method: http.MethodGet},
 			},
 			nil,
 		},
 		{
 			"https",
 			args{
-				hreq: &core.Request{RawURL: "https://www.baidu.com/", Method: http.MethodGet},
+				hreq: &core.Request{ADDR: "https://www.baidu.com/", Method: http.MethodGet},
 			},
 			nil,
 		},

@@ -14,8 +14,7 @@ import (
 
 type ConfigDataItem struct {
 	ClientID string `mapstructure:"client_id"`
-	URL      string
-	Host     string
+	ADDR     string
 	Method   string
 	Data     string
 	Interval time.Duration
@@ -50,8 +49,7 @@ func NewConfig() *Config {
 
 func (c *Config) AddFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&c.Content.ClientID, "cid", c.Content.ClientID, "Used to differentiate reporting clients")
-	flags.StringVar(&c.Content.URL, "url", c.Content.URL, "URL to work with")
-	flags.StringVar(&c.Content.Host, "host", c.Content.Host, "Host to work with")
+	flags.StringVar(&c.Content.ADDR, "addr", c.Content.ADDR, "Address to work with")
 	flags.StringVarP(&c.ConfigPath, "config", "K", "", "Specify which config file to read")
 	flags.DurationVar(&c.ConfigPollInterval, "config-poll-interval", time.Minute, "Control the interval duration for automatic polling of remote configuration files.")
 	flags.StringVarP(&c.Content.Method, "request", "X", c.Content.Method, "Specify request command to use")
@@ -109,8 +107,8 @@ func (c ConfigData) Complete() []*CompletedConfig {
 		if cc.Method == "" {
 			cc.Method = c.Method
 		}
-		if cc.URL == "" {
-			cc.URL = c.URL
+		if cc.ADDR == "" {
+			cc.ADDR = c.ADDR
 		}
 		for _, f := range cc.Includes {
 			cc.IncludeFields = append(cc.IncludeFields, field.Field(f))
@@ -129,8 +127,7 @@ type CompletedConfig struct {
 func (c *CompletedConfig) CreateRequest() *core.Request {
 	req := &core.Request{}
 	req.ClientID = c.ClientID
-	req.RawURL = c.URL
+	req.ADDR = c.ADDR
 	req.Method = c.Method
-	req.Host = c.Host
 	return req
 }

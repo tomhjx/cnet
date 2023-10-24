@@ -9,10 +9,10 @@
     ],
     "items": [
         {
-            "host":"14.215.57.234"
+            "addr":"14.215.57.234"
         },
         {
-            "host":"www.baidu.com"
+            "addr":"www.baidu.com"
         }
     ]
 }

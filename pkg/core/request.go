@@ -10,25 +10,21 @@ type Request struct {
 	TaskID   string
 	ClientID string
 	Tags     map[string]string
-	RawURL   string
 	Method   string
-	Host     string
+	ADDR     string
 }
 
 func (r *Request) Complete() *CompletedRequest {
 	cr := &CompletedRequest{Request: r}
-	u, err := r.CompleteURL()
-	if err == nil {
+	u, _ := r.CompleteURL()
+	if u.Scheme != "" {
 		cr.URL = u
 	}
 	return cr
 }
 
 func (r *Request) CompleteURL() (*url.URL, error) {
-	if r.RawURL == "" {
-		return nil, nil
-	}
-	return url.Parse(r.RawURL)
+	return url.Parse(r.ADDR)
 }
 
 type CompletedRequest struct {
