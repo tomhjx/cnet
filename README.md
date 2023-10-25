@@ -2,6 +2,8 @@
 
 便捷的网络探针，收集网络请求及响应过程信息
 
+[![GitHub license](https://img.shields.io/github/license/tomhjx/netcat.svg?style=popout-square)](https://github.com/tomhjx/netcat/blob/main/LICENSE)
+
 ## 能力
 
 * 统计各阶段耗时
