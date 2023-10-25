@@ -19,7 +19,7 @@ func TestRemoteFileInput(t *testing.T) {
 	// 创建一个模拟的 HTTP 服务器
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 设置响应头
-		w.Header().Set("Last-Modified", time.Now().UTC().Format(http.TimeFormat))
+		w.Header().Set("date", time.Now().UTC().Format(http.TimeFormat))
 		// 写入响应内容
 		w.Write(c1.Body)
 	}))

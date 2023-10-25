@@ -67,7 +67,9 @@ func (b *Builder) Watch() error {
 		go func() {
 			defer b.input.Close()
 			b.input.Watch(func(i Inputer) {
-				b.Load()
+				if err := b.Load(); err != nil {
+					log.Println("wath,load:", err)
+				}
 			})
 		}()
 	})

@@ -78,7 +78,9 @@ func (c *Config) Init(onLoaded func(ConfigData)) {
 	b.OnLoad(func(d any) {
 		onLoaded(d.(ConfigData))
 	})
-	b.Load()
+	if err := b.Load(); err != nil {
+		log.Fatalln(err)
+	}
 	b.Watch()
 }
 

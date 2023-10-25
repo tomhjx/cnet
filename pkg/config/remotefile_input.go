@@ -23,14 +23,37 @@ func (i *RemoteFileInput) Read() (Content, error) {
 		return c, err
 	}
 	defer resp.Body.Close()
-	lastModified := resp.Header.Get("Last-Modified")
-	if c.ModTime, err = time.Parse(http.TimeFormat, lastModified); err != nil {
-		return c, err
-	}
+
+	c.ModTime = i.ParseModTime(resp)
+
 	if c.Body, err = io.ReadAll(resp.Body); err != nil {
 		return c, err
 	}
 	return c, nil
+}
+
+func (i *RemoteFileInput) ParseModTime(resp *http.Response) time.Time {
+	modTime := time.Now()
+
+	keys := map[string]string{
+		"date":          http.TimeFormat,
+		"last-modified": http.TimeFormat,
+	}
+
+	for k, format := range keys {
+		vv := resp.Header.Get(k)
+		if vv == "" {
+			continue
+		}
+		mtime, err := time.Parse(format, vv)
+		if err != nil {
+			continue
+		}
+		return mtime
+	}
+
+	return modTime
+
 }
 
 func (i *RemoteFileInput) Watch(cb func(Inputer)) error {
