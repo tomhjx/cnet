@@ -2,7 +2,6 @@ package options
 
 import (
 	"encoding/json"
-	"log"
 	"time"
 
 	"github.com/spf13/pflag"
@@ -10,6 +9,7 @@ import (
 	"github.com/tomhjx/cnet/pkg/core"
 	"github.com/tomhjx/cnet/pkg/field"
 	"github.com/tomhjx/cnet/pkg/flow"
+	"github.com/tomhjx/xlog"
 )
 
 type ConfigDataItem struct {
@@ -33,6 +33,9 @@ type Config struct {
 	ConfigPollInterval time.Duration
 	Version            bool
 	OnLoaded           func(*Config)
+	LogFile            string
+	Verbosity          int
+	LogLevel           string
 }
 
 func NewConfig() *Config {
@@ -57,6 +60,9 @@ func (c *Config) AddFlags(flags *pflag.FlagSet) {
 	flags.DurationVar(&c.Content.Interval, "interval", c.Content.Interval, "Control the interval duration between each request.")
 	flags.BoolVarP(&c.Version, "version", "V", c.Version, "Show version number and quit")
 	flags.StringArrayVarP(&c.Content.Includes, "include", "i", c.Content.Includes, "Include protocol fields (header,body) in the output")
+	flags.StringVar(&c.LogFile, "log-file", c.LogFile, "Logging output file path")
+	flags.IntVarP(&c.Verbosity, "verbosity", "v", c.Verbosity, "Number for the log level verbosity")
+	flags.StringVar(&c.LogLevel, "log-level", c.LogLevel, "Name for the log severity level:info,warning,error,fatal.")
 
 	sinks := []string{}
 	flags.StringArrayVar(&sinks, "sink", sinks, "SINK to work with")
@@ -68,18 +74,22 @@ func (c *Config) AddFlags(flags *pflag.FlagSet) {
 }
 
 func (c *Config) Init(onLoaded func(ConfigData)) {
+	xlog.SetVerbosity(c.Verbosity)
+	xlog.SetSeverityName(c.LogLevel)
+	xlog.SetFile(c.LogFile)
+
 	if c.ConfigPath == "" {
 		return
 	}
 	b, err := config.NewBuilder(config.InputOption{Path: c.ConfigPath, PollInterval: c.ConfigPollInterval}, c.Content)
 	if err != nil {
-		log.Fatalln(err)
+		xlog.Fatalln(err)
 	}
 	b.OnLoad(func(d any) {
 		onLoaded(d.(ConfigData))
 	})
 	if err := b.Load(); err != nil {
-		log.Fatalln(err)
+		xlog.Fatalln(err)
 	}
 	b.Watch()
 }

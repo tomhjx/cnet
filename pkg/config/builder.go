@@ -2,10 +2,10 @@ package config
 
 import (
 	"bytes"
-	"log"
 	"sync"
 
 	"github.com/spf13/viper"
+	"github.com/tomhjx/cnet/pkg/xlogging"
 )
 
 type Builder struct {
@@ -43,11 +43,11 @@ func (b *Builder) Load() error {
 		return err
 	}
 	if c.ModTime.Before(b.raw.ModTime) {
-		log.Println("Old configuration.")
+		xlogging.Debugged().Info("Configuration modified time is old,", c.ModTime, "<=", b.raw.ModTime)
 		return nil
 	}
 	if bytes.Equal(c.Body, b.raw.Body) {
-		log.Println("No changes in configuration.")
+		xlogging.Debugged().Info("No changes in configuration.")
 		return nil
 	}
 	if err := b.viper.ReadConfig(bytes.NewReader(c.Body)); err != nil {
@@ -68,7 +68,7 @@ func (b *Builder) Watch() error {
 			defer b.input.Close()
 			b.input.Watch(func(i Inputer) {
 				if err := b.Load(); err != nil {
-					log.Println("wath,load:", err)
+					xlogging.Configured().ErrorS(err, "config load fail at watching.")
 				}
 			})
 		}()
