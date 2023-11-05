@@ -58,9 +58,9 @@ func (mc Metric) handle() (*MetricHandle, error) {
 }
 
 const (
-	TotalMetric      Metric = "flow_total"
-	ValueMetric      Metric = "flow_value"
-	DistributeMetric Metric = "flow_distribute"
+	TotalMetric      Metric = "cnet_flow_total"
+	ValueMetric      Metric = "cnet_flow_value"
+	DistributeMetric Metric = "cnet_flow_distribute"
 )
 
 func RegisterMetrics() {
