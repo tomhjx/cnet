@@ -2,10 +2,11 @@ package app
 
 import (
 	"context"
-	"log"
 
 	"github.com/tomhjx/cnet/cmd/cnet/app/options"
 	"github.com/tomhjx/cnet/pkg/flow"
+	"github.com/tomhjx/cnet/pkg/metric"
+	"github.com/tomhjx/xlog"
 )
 
 var (
@@ -28,13 +29,16 @@ func Run(ctx context.Context, config *options.Config, stopCh <-chan struct{}) er
 		for {
 			jc := <-jobPreloaded
 			if err := runJob(jc.ctx, jc.config.Complete()); err != nil {
-				log.Fatalln(err)
+				xlog.Fatal(err)
 			}
 		}
 	}()
-	config.Init(func(c options.ConfigData) {
+	config.Init(func() {
+		metric.StartServer(config.MetricsServerPort, ctx)
+	}, func(c options.ConfigData) {
 		NotifyLoadJob(context.Background(), c)
 	})
+
 	<-stopCh
 	return nil
 }

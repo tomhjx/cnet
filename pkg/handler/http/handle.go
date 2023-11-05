@@ -24,6 +24,9 @@ func (h Handle) Initialize(o *handler.Option) (handler.Handler, error) {
 }
 
 func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
+	if hreq.Method == "" {
+		hreq.Method = http.MethodGet
+	}
 	req, err := http.NewRequest(hreq.Method, hreq.ADDR, nil)
 	if err != nil {
 		return nil, err

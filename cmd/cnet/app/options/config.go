@@ -35,6 +35,7 @@ type Config struct {
 	OnLoaded           func(*Config)
 	LogFile            string
 	Verbosity          int
+	MetricsServerPort  int
 	LogLevel           string
 }
 
@@ -62,6 +63,7 @@ func (c *Config) AddFlags(flags *pflag.FlagSet) {
 	flags.StringArrayVarP(&c.Content.Includes, "include", "i", c.Content.Includes, "Include protocol fields (header,body) in the output")
 	flags.StringVar(&c.LogFile, "log-file", c.LogFile, "Logging output file path")
 	flags.IntVarP(&c.Verbosity, "verbosity", "v", c.Verbosity, "Number for the log level verbosity")
+	flags.IntVar(&c.MetricsServerPort, "metrics-server-port", 8080, "Metrics http server port")
 	flags.StringVar(&c.LogLevel, "log-level", c.LogLevel, "Name for the log severity level:info,warning,error,fatal.")
 
 	sinks := []string{}
@@ -73,10 +75,11 @@ func (c *Config) AddFlags(flags *pflag.FlagSet) {
 	}
 }
 
-func (c *Config) Init(onLoaded func(ConfigData)) {
+func (c *Config) Init(onInited func(), onLoaded func(ConfigData)) {
 	xlog.SetVerbosity(c.Verbosity)
 	xlog.SetSeverityName(c.LogLevel)
 	xlog.SetFile(c.LogFile)
+	onInited()
 
 	if c.ConfigPath == "" {
 		return

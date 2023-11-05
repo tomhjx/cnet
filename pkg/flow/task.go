@@ -2,7 +2,7 @@ package flow
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -10,6 +10,8 @@ import (
 	"github.com/tomhjx/cnet/pkg/field"
 	"github.com/tomhjx/cnet/pkg/handler"
 	"github.com/tomhjx/cnet/pkg/sink"
+	"github.com/tomhjx/cnet/pkg/xlogging"
+	"github.com/tomhjx/xlog"
 )
 
 type Task struct {
@@ -63,6 +65,15 @@ func (f *Task) AddSink(s sink.Sink) error {
 	return nil
 }
 
+func (f *Task) Metric(fields []field.Field, res *RawContent) {
+	for _, fd := range fields {
+		if !fd.IsEnableMetric() {
+			continue
+		}
+		fd.CalcMetric(map[string]string{"addr": f.request.ADDR}, res)
+	}
+}
+
 func (f *Task) Run() error {
 	res, err := f.protocol.Handle(f.request, f.handlerOption)
 	if err != nil {
@@ -75,8 +86,10 @@ func (f *Task) Run() error {
 	}
 
 	fields = append(fields, f.option.IncludeFields...)
+	rc := &RawContent{Result: res, Request: f.request}
+	f.Metric(fields, rc)
 
-	fc := NewFormatContent(&RawContent{Result: res, Request: f.request}, fields)
+	fc := NewFormatContent(rc, fields)
 	for _, v := range f.sinks {
 		go func(s sink.Sink, sc *string) {
 			s.Run(sc)
@@ -89,14 +102,14 @@ func (t *Task) RunLoop() error {
 	ticker := time.NewTicker(t.interval)
 	defer func() {
 		ticker.Stop()
-		log.Printf("task [%s] done.", t.ID())
+		xlogging.Changed().Infof("task [%s] done.", t.ID())
 	}()
 	run := func() {
 		if !t.isAlways {
 			t.remainingCount--
 		}
 		if err := t.Run(); err != nil {
-			log.Println(err)
+			xlog.ErrorS(err, fmt.Sprintf("task [%s] fail", t.ID()))
 		}
 	}
 	run()
@@ -128,7 +141,7 @@ func NewTaskContext(option *TaskOption, request *core.Request, sinkConfigs []Sin
 	for _, sc := range sinkConfigs {
 		sink, err := SinkOf(sc.Name, sc.Option)
 		if err != nil {
-			log.Println(err)
+			xlog.ErrorS(err, fmt.Sprintf("sink [%s] create fail.", sc.Name))
 			continue
 		}
 		sinks = append(sinks, sink)
