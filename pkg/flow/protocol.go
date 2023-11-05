@@ -7,6 +7,7 @@ import (
 	"github.com/tomhjx/cnet/pkg/core"
 	"github.com/tomhjx/cnet/pkg/field"
 	"github.com/tomhjx/cnet/pkg/handler"
+	"github.com/tomhjx/cnet/pkg/handler/amqp"
 	"github.com/tomhjx/cnet/pkg/handler/host"
 	"github.com/tomhjx/cnet/pkg/handler/http"
 )
@@ -15,6 +16,7 @@ const (
 	HTTPProtocol  Protocol = "http"
 	HTTPsProtocol Protocol = "https"
 	HOSTProtocol  Protocol = "host"
+	AMQPProtocol  Protocol = "amqp"
 )
 
 type ProtocolSet struct {
@@ -76,4 +78,5 @@ func RegisterProtocols() {
 	HTTPProtocol.Inject(http.Handle{}, httpMeta)
 	HTTPsProtocol.Inject(http.Handle{}, httpMeta)
 	HOSTProtocol.Inject(host.Handle{}, CommonMeta)
+	AMQPProtocol.Inject(amqp.Handle{}, CommonMeta)
 }

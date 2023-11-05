@@ -1,0 +1,16 @@
+{
+    "client_id":"foo2023101916",
+    "interval": "5s",
+    "includes":["id","jid","tid","connect_time","pre_transfer_time","start_transfer_time","ttfb_time","total_time"],
+    "sinks":[
+        {
+            "name":"stdout"
+        }
+    ],
+    "items": [
+        {
+            "addr":"amqp://guest:guest@rabbitmq.lab.local:5672/",
+            "queue":"cnet_amqp_q"
+        }
+    ]
+}

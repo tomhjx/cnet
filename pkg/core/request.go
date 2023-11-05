@@ -5,13 +5,16 @@ import (
 )
 
 type Request struct {
-	ID       string
-	JobID    string
-	TaskID   string
-	ClientID string
-	Tags     map[string]string
-	Method   string
-	ADDR     string
+	ID              string
+	JobID           string
+	TaskID          string
+	ClientID        string
+	Tags            map[string]string
+	Method          string
+	ADDR            string
+	Queue           string
+	QueueExchange   string
+	QueueRoutingKey string
 }
 
 func (r *Request) Complete() *CompletedRequest {

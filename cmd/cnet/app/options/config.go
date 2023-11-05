@@ -13,13 +13,16 @@ import (
 )
 
 type ConfigDataItem struct {
-	ClientID string `mapstructure:"client_id"`
-	ADDR     string
-	Method   string
-	Data     string
-	Interval time.Duration
-	Includes []string
-	Sinks    []flow.SinkConfig
+	ClientID        string `mapstructure:"client_id"`
+	ADDR            string
+	Queue           string
+	QueueExchange   string
+	QueueRoutingKey string
+	Method          string
+	Data            string
+	Interval        time.Duration
+	Includes        []string
+	Sinks           []flow.SinkConfig
 }
 
 type ConfigData struct {
@@ -125,6 +128,9 @@ func (c ConfigData) Complete() []*CompletedConfig {
 		if cc.ADDR == "" {
 			cc.ADDR = c.ADDR
 		}
+		if cc.QueueRoutingKey == "" {
+			cc.QueueRoutingKey = cc.Queue
+		}
 		for _, f := range cc.Includes {
 			cc.IncludeFields = append(cc.IncludeFields, field.Field(f))
 		}
@@ -144,5 +150,8 @@ func (c *CompletedConfig) CreateRequest() *core.Request {
 	req.ClientID = c.ClientID
 	req.ADDR = c.ADDR
 	req.Method = c.Method
+	req.Queue = c.Queue
+	req.QueueExchange = c.QueueExchange
+	req.QueueRoutingKey = c.QueueRoutingKey
 	return req
 }

@@ -20,6 +20,7 @@
 * [ ] UDP
 * [ ] Web Socket
 * [ ] Socket
+* [x] AMQP
 * [x] HTTP
 * [x] HTTPs
 

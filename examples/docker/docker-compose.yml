@@ -6,7 +6,7 @@ services:
       hostname: foo
       privileged: true
       working_dir: /work/src
-      command:  ["go", "run", "./cmd/cnet/main.go", "--config", "/work/src/examples/config/host-stdout.json"]
+      command:  ["go", "run", "./cmd/cnet/main.go", "--config", "/work/src/examples/config/amqp-stdout.json"]
       environment:
         GOPROXY: "https://goproxy.cn,direct"
       volumes:
@@ -14,20 +14,22 @@ services:
         - ~/Work/workspace/go:/go
       cap_add:
         - ALL
-  cnet-remote-cfg:
-      image: golang:1.20-alpine3.17
-      restart: always
-      hostname: foo
-      privileged: true
-      working_dir: /work/src
-      command:  ["go", "run", "./cmd/cnet/main.go", "--config", "https://raw.githubusercontent.com/tomhjx/cnet/main/examples/config/http-stdout.json"]
-      environment:
-        GOPROXY: "https://goproxy.cn,direct"
-      volumes:
-        - ../../:/work/src
-        - ~/Work/workspace/go:/go
-      cap_add:
-        - ALL
+  # cnet-remote-cfg:
+  #     image: golang:1.20-alpine3.17
+  #     restart: always
+  #     hostname: foo
+  #     privileged: true
+  #     working_dir: /work/src
+  #     command:  ["go", "run", "./cmd/cnet/main.go", "--config", "https://raw.githubusercontent.com/tomhjx/cnet/main/examples/config/http-stdout.json"]
+  #     environment:
+  #       GOPROXY: "https://goproxy.cn,direct"
+  #     volumes:
+  #       - ../../:/work/src
+  #       - ~/Work/workspace/go:/go
+  #     cap_add:
+  #       - ALL
 networks:
   default:
     name: lab
+    external: true
+
