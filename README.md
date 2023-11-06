@@ -44,7 +44,7 @@ cnet -h
 
 ```
 
-* [日志](./doc/logging.md)
+* [查看日志](./doc/logging.md)
 
 
 ## 字段
