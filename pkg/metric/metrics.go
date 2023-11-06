@@ -11,7 +11,21 @@ import (
 	"github.com/tomhjx/xlog"
 )
 
-var metrics = map[Metric]*MetricHandle{}
+var (
+	metrics = map[Metric]*MetricHandle{}
+	enable  = true
+)
+
+func Disable() {
+	enable = false
+}
+func Enable() {
+	enable = true
+}
+
+func IsEnabled() bool {
+	return enable
+}
 
 type MetricHandle struct {
 	Collector  prometheus.Collector
@@ -102,6 +116,9 @@ func RegisterMetrics() {
 }
 
 func StartServer(port int, ctx context.Context) {
+	if !IsEnabled() {
+		return
+	}
 
 	RegisterMetrics()
 

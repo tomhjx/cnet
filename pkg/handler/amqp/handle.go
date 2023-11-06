@@ -8,7 +8,6 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/tomhjx/cnet/pkg/core"
 	"github.com/tomhjx/cnet/pkg/handler"
-	"github.com/tomhjx/xlog"
 )
 
 type Handle struct {
@@ -70,7 +69,6 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 		if d.MessageId != msgID {
 			continue
 		}
-		xlog.Info(d.Timestamp, time.Now())
 		res.RunTime.TTFBTime = time.Since(t3)
 		break
 	}

@@ -1,14 +1,13 @@
 package main
 
 import (
-	"log"
-
 	"github.com/tomhjx/cnet/cmd/cnet/app"
+	"github.com/tomhjx/xlog"
 )
 
 func main() {
 
 	if err := app.NewCommand().Execute(); err != nil {
-		log.Fatalf("err: %v", err)
+		xlog.Fatal(err)
 	}
 }

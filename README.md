@@ -44,6 +44,8 @@ cnet -h
 
 ```
 
+## [日志](./doc/logging.md)
+
 
 ## 字段
 
@@ -103,3 +105,5 @@ status_code     | 响应状态码
 
 
 ```
+
+* AMQP

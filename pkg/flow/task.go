@@ -9,6 +9,7 @@ import (
 	"github.com/tomhjx/cnet/pkg/core"
 	"github.com/tomhjx/cnet/pkg/field"
 	"github.com/tomhjx/cnet/pkg/handler"
+	"github.com/tomhjx/cnet/pkg/metric"
 	"github.com/tomhjx/cnet/pkg/sink"
 	"github.com/tomhjx/cnet/pkg/xlogging"
 	"github.com/tomhjx/xlog"
@@ -66,6 +67,9 @@ func (f *Task) AddSink(s sink.Sink) error {
 }
 
 func (f *Task) Metric(fields []field.Field, res *RawContent) {
+	if !metric.IsEnabled() {
+		return
+	}
 	for _, fd := range fields {
 		if !fd.IsEnableMetric() {
 			continue
