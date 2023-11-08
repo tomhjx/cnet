@@ -28,7 +28,7 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 		return nil, err
 	}
 	res.RunTime.ConnectTime = time.Since(t0)
-	t1 := time.Now()
+	// t1 := time.Now()
 	defer conn.Close()
 	ch, err := conn.Channel()
 	if err != nil {
@@ -52,8 +52,9 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	res.RunTime.PreTransferTime = time.Since(t1)
-	t2 := time.Now()
+	res.RunTime.PreTransferTime = time.Since(t0)
+	// t2 := time.Now()
+	t3 := time.Now()
 	err = ch.PublishWithContext(ctx, hreq.QueueExchange, hreq.QueueRoutingKey, false, false, amqp.Publishing{
 		ContentType: "text/plain",
 		Body:        []byte("aaa"),
@@ -63,8 +64,6 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	t3 := time.Now()
-	res.RunTime.StartTransferTime = time.Since(t2)
 	for d := range cMsgs {
 		if d.MessageId != msgID {
 			continue
