@@ -14,7 +14,7 @@ const (
 	TCPTime             Field = "tcp_time"
 	SSLTime             Field = "ssl_time"
 	PreTransferTime     Field = "pre_transfer_time"
-	TTFBTime            Field = "ttfb_time"
+	TTFB                Field = "ttfb"
 	ServerProcessTime   Field = "server_process_time"
 	StartTransferTime   Field = "start_transfer_time"
 	ContentTransferTime Field = "content_transfer_time"

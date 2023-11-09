@@ -57,7 +57,7 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 	t3 := time.Now()
 	err = ch.PublishWithContext(ctx, hreq.QueueExchange, hreq.QueueRoutingKey, false, false, amqp.Publishing{
 		ContentType: "text/plain",
-		Body:        []byte("aaa"),
+		Body:        []byte("a"),
 		Timestamp:   time.Now(),
 		MessageId:   msgID,
 	})
@@ -68,7 +68,7 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 		if d.MessageId != msgID {
 			continue
 		}
-		res.RunTime.TTFBTime = time.Since(t3)
+		res.RunTime.TTFB = time.Since(t3)
 		break
 	}
 	res.RunTime.TotalTime = time.Since(t0)

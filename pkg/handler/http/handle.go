@@ -120,7 +120,7 @@ func (h Handle) Do(hreq *core.CompletedRequest) (*core.Result, error) {
 	res.RunTime.TCPTime = t2.Sub(t1)
 	res.RunTime.PreTransferTime = t3.Sub(t0)
 	res.RunTime.StartTransferTime = t4.Sub(t0)
-	res.RunTime.TTFBTime = res.RunTime.StartTransferTime - res.RunTime.AppConnectTime
+	res.RunTime.TTFB = res.RunTime.StartTransferTime - res.RunTime.AppConnectTime
 	res.RunTime.ContentTransferTime = t7.Sub(t4)
 	res.RunTime.ServerProcessTime = t4.Sub(t3)
 	res.RunTime.TotalTime = t7.Sub(t0)

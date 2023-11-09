@@ -11,7 +11,7 @@ type RunTime struct {
 	SSLTime             time.Duration
 	AppConnectTime      time.Duration
 	ServerProcessTime   time.Duration
-	TTFBTime            time.Duration
+	TTFB                time.Duration
 	RedirectTime        time.Duration
 	PreTransferTime     time.Duration
 	StartTransferTime   time.Duration

@@ -1,7 +1,7 @@
 {
     "client_id":"foo2023101916",
     "interval": "5s",
-    "includes":["id","jid","tid","connect_time","pre_transfer_time","start_transfer_time","ttfb_time","total_time"],
+    "includes":["id","jid","tid","connect_time","pre_transfer_time","ttfb","total_time"],
     "sinks":[
         {
             "name":"stdout"

@@ -31,8 +31,8 @@ func RegisterFields() {
 		Metric:  defaultMetricDecorate(),
 	})
 
-	field.TTFBTime.Init(&field.FieldHandle{
-		ValueOf: func(r any) any { return r.(*RawContent).Result.RunTime.TTFBTime.Seconds() },
+	field.TTFB.Init(&field.FieldHandle{
+		ValueOf: func(r any) any { return r.(*RawContent).Result.RunTime.TTFB.Seconds() },
 		Metric:  defaultMetricDecorate(),
 	})
 
