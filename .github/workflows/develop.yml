@@ -38,6 +38,6 @@ jobs:
       - name: Publish Docker Image
         run: |
           DOCKER_RELEASE_TAG="tomhjx/cnet:dev"
-          ${{ github.workspace }}/build/docker/pub-docker-image.sh $DOCKER_RELEASE_TAG
+          ${{ github.workspace }}/build/docker/build-push-image.sh $DOCKER_RELEASE_TAG
 
 
