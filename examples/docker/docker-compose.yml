@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   cnet:
-      image: golang:1.20-alpine3.17
+      image: golang:1.21-alpine3.18
       restart: always
       hostname: foo
       privileged: true
@@ -16,7 +16,7 @@ services:
         - ALL
  ### remote config
   # cnet-remote-cfg:
-  #     image: golang:1.20-alpine3.17
+  #     image: golang:1.21-alpine3.18
   #     restart: always
   #     hostname: foo
   #     privileged: true
