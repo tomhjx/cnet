@@ -131,8 +131,6 @@ func StartServer(port int, ctx context.Context) {
 	}
 	go func() {
 		xlogging.Changed().Infof("metrics server(:%d) started.", port)
-		if err := srv.ListenAndServe(); err != nil {
-			xlog.Error(err, "metrics server start fail.")
-		}
+		xlog.Error(srv.ListenAndServe(), "metrics http server start fail.")
 	}()
 }

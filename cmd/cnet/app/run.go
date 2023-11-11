@@ -6,6 +6,7 @@ import (
 	"github.com/tomhjx/cnet/cmd/cnet/app/options"
 	"github.com/tomhjx/cnet/pkg/flow"
 	"github.com/tomhjx/cnet/pkg/metric"
+	"github.com/tomhjx/cnet/pkg/profile"
 	"github.com/tomhjx/xlog"
 )
 
@@ -35,6 +36,7 @@ func Run(ctx context.Context, config *options.Config, stopCh <-chan struct{}) er
 	}()
 	config.Init(func() {
 		metric.StartServer(config.MetricsServerPort, ctx)
+		profile.StartServer(config.ProfileServerPort, ctx)
 	}, func(c options.ConfigData) {
 		NotifyLoadJob(context.Background(), c)
 	})

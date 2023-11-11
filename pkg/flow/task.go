@@ -37,7 +37,7 @@ func NewTask(ctx context.Context, request *core.CompletedRequest, sinks []sink.S
 	}
 	ho.TimeOut = option.Interval
 	t := &Task{
-		id:             uuid.New().String(),
+		id:             uuid.NewString(),
 		ctx:            ctx,
 		protocol:       ProtocolWithCompletedRequest(request),
 		request:        request,
