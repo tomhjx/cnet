@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Develop
+name: Deploy
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -8,6 +8,8 @@ on:
   push:
     branches:
       - "develop"
+    tags:
+      - "*"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -37,7 +39,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Publish Docker Image
         run: |
-          DOCKER_RELEASE_TAG="tomhjx/cnet:dev"
-          ${{ github.workspace }}/build/docker/build-push-image.sh $DOCKER_RELEASE_TAG
+          DOCKER_RELEASE_TAG="tomhjx/cnet:${GITHUB_REF_NAME}"
+          ${{ github.workspace }}/build-push-image.sh $DOCKER_RELEASE_TAG
 
 
