@@ -59,7 +59,7 @@ cnet -h
     * [x] Prometheus
 
 ## 使用
-
+* [配置示例](./examples)
 * [字段含义](./doc/fields.md)
 * [查看日志](./doc/logging.md)
 
