@@ -1,0 +1,36 @@
+version: '3.5'
+services:
+  cnet:
+      image: golang:1.21-alpine3.18
+      restart: always
+      hostname: foo
+      privileged: true
+      working_dir: /work/src
+      command:  ["go", "run", "./cmd/cnet/main.go", "--config", "/work/src/examples/config/http-stdout.json", "-v", "4", "--profile-server-port", "6060"]
+      environment:
+        GOPROXY: "https://goproxy.cn,direct"
+      volumes:
+        - ../../:/work/src
+        - ~/Work/workspace/go:/go
+      cap_add:
+        - ALL
+  pprofweb:
+      build: 
+        context: ../../build/docker
+        dockerfile: gotools.Dockerfile
+      restart: always
+      privileged: true
+      command:  ["go", "tool", "pprof", "-http=0.0.0.0:6001", "http://cnet:6060/debug/pprof/profile"]
+      depends_on:
+        - cnet
+      ports:
+        - "6001:6001"
+      volumes:
+        - ~/Work/workspace/go:/go
+      cap_add:
+        - ALL
+networks:
+  default:
+    name: lab
+    external: true
+

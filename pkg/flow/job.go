@@ -34,7 +34,7 @@ func (j *Job) ID() string {
 func NewJob(ctx context.Context, taskCtxs []*TaskContext) (*Job, error) {
 	jobCtx, cancel := context.WithCancel(ctx)
 	j := &Job{
-		id:          uuid.New().String(),
+		id:          uuid.NewString(),
 		ctx:         jobCtx,
 		tasks:       []*Task{},
 		onCancelled: func() { cancel() },

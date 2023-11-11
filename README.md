@@ -4,12 +4,33 @@
 
 [![GitHub license](https://img.shields.io/github/license/tomhjx/netcat.svg?style=popout-square)](https://github.com/tomhjx/netcat/blob/main/LICENSE)
 
-## 能力
+## 开始使用
 
-* 统计各阶段耗时
-* 支持prometheus接入
-* 支持多个网络协议
-* 支持主流输出协议
+* [Docker Image](https://hub.docker.com/r/tomhjx/cnet)
+
+```bash
+# 开发版本
+docker run --rm tomhjx/cnet:develop -h
+
+# 最新可用版本
+docker run --rm tomhjx/cnet:main -h
+
+# tag x.x.x 版本
+docker run --rm tomhjx/cnet:x.x.x -h
+
+```
+
+* 编译源码
+
+```bash
+
+go build -o cnet ./cmd/cnet/main.go
+
+cnet -h
+
+```
+
+## [日志](./doc/logging.md)
 
 
 ### 支持协议
@@ -35,16 +56,6 @@
 * [ ] UDP
 * [ ] TCP
 * [ ] Unix Socket
-
-## 使用
-
-```bash
-
-cnet -h
-
-```
-
-* [查看日志](./doc/logging.md)
 
 
 ## 字段
