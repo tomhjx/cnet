@@ -4,7 +4,7 @@
 
 便捷的网络探针，收集网络请求及响应过程信息
 
-## 快速开始
+## 开始
 
 * [Docker Image](https://hub.docker.com/r/tomhjx/cnet)
 
