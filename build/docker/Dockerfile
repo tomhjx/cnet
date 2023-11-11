@@ -7,5 +7,5 @@ RUN mkdir /out && \
     chmod +x /out/cnet
 
 FROM alpine:3.18.4
-COPY --from=builder ./cnet /usr/local/bin/cnet
+COPY --from=builder /out/cnet /usr/local/bin/cnet
 ENTRYPOINT [ "cnet" ]
