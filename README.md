@@ -34,30 +34,29 @@ cnet -h
 
 ## 能力
 
-### 支持探测协议
+* 探测协议
+    * [x] IP
+    * [x] Domain
+    * [ ] TCP
+    * [ ] UDP
+    * [ ] Web Socket
+    * [ ] Socket
+    * [x] AMQP
+    * [x] HTTP
+    * [x] HTTPs
 
-* [x] IP
-* [x] Domain
-* [ ] TCP
-* [ ] UDP
-* [ ] Web Socket
-* [ ] Socket
-* [x] AMQP
-* [x] HTTP
-* [x] HTTPs
+* 输出格式
+    * [x] JSON
 
+* 输出方式
+    * [x] STDOUT
+    * [x] SYSLOG
+    * [ ] UDP
+    * [ ] TCP
+    * [ ] Unix Socket
 
-### 支持输出格式
-
-* [x] JSON
-
-### 支持输出源
-* [x] STDOUT
-* [x] SYSLOG
-* [ ] UDP
-* [ ] TCP
-* [ ] Unix Socket
-
+* 接入监控
+    * [x] Prometheus
 
 ## 使用
 
