@@ -1,6 +1,6 @@
 # cNET
 
-[![GitHub license](https://img.shields.io/github/license/tomhjx/netcat.svg?style=popout-square)](https://github.com/tomhjx/netcat/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/tomhjx/netcat.svg?style=popout-square)](https://github.com/tomhjx/netcat/blob/main/LICENSE) ![GitHub Workflow Status (Publish)](https://img.shields.io/github/actions/workflow/status/tomhjx/cnet/publish.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/tomhjx/cnet) ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/tomhjx/cnet)
 
 便捷的网络探针，收集网络请求及响应过程信息
 
