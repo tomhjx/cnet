@@ -13,7 +13,7 @@
 docker run --rm tomhjx/cnet:develop -h
 
 # 最新可用版本
-docker run --rm tomhjx/cnet:main -h
+docker run --rm tomhjx/cnet:latest -h
 
 # tag x.x.x 版本
 docker run --rm tomhjx/cnet:x.x.x -h

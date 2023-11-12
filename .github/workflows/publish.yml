@@ -8,7 +8,6 @@ on:
   push:
     branches:
       - "develop"
-      - "main"
     tags:
       - "*"
 
@@ -40,7 +39,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Publish Docker Image
         run: |
-          DOCKER_RELEASE_TAG="tomhjx/cnet:${GITHUB_REF_NAME}"
+          DOCKER_REPO="tomhjx/cnet"
+          DOCKER_RELEASE_TAG="${DOCKER_REPO}:${GITHUB_REF_NAME}"
           ${{ github.workspace }}/build/docker/build-push-image.sh $DOCKER_RELEASE_TAG
+          if [[ "${GITHUB_REF}" =~ ^refs/tags/ ]]; then
+            ${{ github.workspace }}/build/docker/build-push-image.sh "${DOCKER_REPO}:latest"
+          fi
 
 
